@@ -6,7 +6,6 @@ import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
-    PostsModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         POSTGRES_HOST: Joi.string().required(),
@@ -18,6 +17,7 @@ import { DatabaseModule } from './database/database.module';
       }),
     }),
     DatabaseModule,
+    PostsModule,
   ],
   controllers: [],
   providers: [],

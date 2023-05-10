@@ -23,30 +23,25 @@ export class PostsService {
     throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
   }
 
-  replacePost(id: number, post: UpdatePostDto) {
-    // const postIndex = this.posts.findIndex((post) => post.id === id);
-    // if (postIndex > -1) {
-    //   this.posts[postIndex] = post;
-    //   return post;
-    // }
+  async updatePost(id: number, post: UpdatePostDto) {
+    await this.postRepository.update(id, post);
+    const updatedPost = await this.postRepository.findOne({ where: { id } });
+    if (updatedPost) {
+      return updatedPost;
+    }
     throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
   }
 
-  createPost(post: CreatePostDto) {
-    // const newPost = {
-    //   id: ++this.lastPostId,
-    //   ...post,
-    // };
-    // this.posts.push(newPost);
-    // return newPost;
+  async createPost(post: CreatePostDto) {
+    const newPost = this.postRepository.create(post);
+    await this.postRepository.save(newPost);
+    return newPost;
   }
 
-  deletePost(id: number) {
-    // const postIndex = this.posts.findIndex((post) => post.id === id);
-    // if (postIndex > -1) {
-    //   this.posts.splice(postIndex, 1);
-    // } else {
-    //   throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
-    // }
+  async deletePost(id: number) {
+    const deleteResponce = await this.postRepository.delete(id);
+    if (!deleteResponce.affected) {
+      throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
+    }
   }
 }
