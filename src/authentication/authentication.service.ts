@@ -1,12 +1,13 @@
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './dto/register.dto';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PostgresErrorCode } from 'src/database/postgresErrorCodes.enum';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TokenPayload } from './tokenPayload.interface';
 
+@Injectable()
 export class AuthenticationService {
   constructor(
     private readonly usersService: UsersService,
@@ -16,20 +17,12 @@ export class AuthenticationService {
 
   public async register(registrationData: RegisterDto) {
     const hashedPasword = await bcrypt.hash(registrationData.password, 10);
-    console.log(
-      'file: authentication.service.ts:19  register  hashedPasword:',
-      this.usersService,
-    );
 
     try {
       const createdUser = await this.usersService.create({
         ...registrationData,
         password: hashedPasword,
       });
-      console.log(
-        'file: authentication.service.ts:25  register  createdUser:',
-        createdUser,
-      );
       createdUser.password = undefined;
       return createdUser;
     } catch (error) {
@@ -39,7 +32,6 @@ export class AuthenticationService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      console.log(error);
       throw new HttpException(
         'Something went wrong,',
         HttpStatus.INTERNAL_SERVER_ERROR,
