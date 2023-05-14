@@ -23,6 +23,7 @@ export class PostsController {
     return this.postsService.getAllPosts();
   }
 
+  @UseGuards(JwtAuthenticationGuard)
   @Get(':id')
   getPostById(@Param('id') id: string) {
     return this.postsService.getPostById(Number(id));
