@@ -38,7 +38,7 @@ export class PostsService {
     await this.postRepository.save(newPost);
     return newPost;
   }
-
+  //ToDO check why not send Error
   async deletePost(id: number) {
     const deleteResponce = await this.postRepository.delete(id);
     if (!deleteResponce.affected) {
