@@ -13,6 +13,7 @@ export class Post {
   public content: string;
 
   @Column({ nullable: true })
+  //Todo check with Rost why it doesn`t work
   @Transform((value) => {
     if (value !== null) {
       return value;
