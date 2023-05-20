@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -38,7 +38,7 @@ export class PostsService {
     await this.postRepository.save(newPost);
     return newPost;
   }
-  //ToDO check why not send Error
+
   async deletePost(id: number) {
     const deleteResponce = await this.postRepository.delete(id);
     if (!deleteResponce.affected) {

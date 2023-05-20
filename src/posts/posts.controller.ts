@@ -43,7 +43,7 @@ export class PostsController {
 
   @UseGuards(JwtAuthenticationGuard)
   @Delete(':id')
-  async deletePost(@Param() { id }: FindOneParams) {
-    this.postsService.deletePost(Number(id));
+  deletePost(@Param() { id }: FindOneParams) {
+    return this.postsService.deletePost(Number(id));
   }
 }
